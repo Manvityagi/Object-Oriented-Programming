@@ -1,37 +1,45 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-class DS{
-public:
-    int *arr;
-    int x,y,z;
-    DS(){
-        arr = new int[5];
+const int N = 201000;
+int n, p[N], vis[N], rt, cnt, T;
+int main()
+{
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i++)
+    {
+        scanf("%d", p + i);
+        if (p[i] == i)
+            rt = i;
     }
-    DS(DS &rhs){ //this is what is happening in the default copy constructor 
-        x = rhs.x;
-        y = rhs.y;
-        arr = rhs.arr; 
+    for (int i = 1; i <= n; i++)
+    {
+        if (!vis[i])
+        {
+            T++;
+            int x = i;
+            while (!vis[x])
+            {
+                vis[x] = T;
+                x = p[x];
+            }
+            if (vis[x] == T)
+            {
+                if (!rt)
+                {
+                    rt = x;
+                    p[x] = x;
+                    cnt++;
+                }
+                if (x != rt)
+                {
+                    p[x] = rt;
+                    cnt++;
+                }
+            }
+        }
     }
-};
-
-
-int main(){
-    DS a;
-    for(int i = 0; i < 5; ++i){
-        a.arr[i] = i+1;
-    }
-    DS b = a;
-    for(int i = 0; i < 5; ++i){
-        b.arr[i] = 5-i;
-    }
-    for(int i = 0; i < 5; ++i){
-        cout << a.arr[i] << " ";
-    }
-    cout << endl;
-    for(int i = 0; i < 5; ++i){
-        cout << b.arr[i] << " ";
-    }
-    cout << endl;
-    return 0;
+    printf("%d\n", cnt);
+    for (int i = 1; i <= n; i++)
+        printf("%d ", p[i]);
 }
